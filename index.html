@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>30-Minute Notes Timer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+      margin: 0;
+    }
+
+    h1 {
+      color: #333;
+      margin-top: 20px;
+    }
+
+    .timer {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #e74c3c;
+      background: white;
+      padding: 10px 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin: 20px 0;
+    }
+
+    .start-btn {
+      padding: 10px 25px;
+      background-color: #3498db;
+      color: white;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: background 0.3s;
+    }
+
+    .start-btn:hover {
+      background-color: #2980b9;
+    }
+
+    textarea {
+      width: 90%;
+      max-width: 600px;
+      height: 300px;
+      padding: 15px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      resize: none;
+      background: #fff;
+    }
+
+    textarea:disabled {
+      background-color: #f0f0f0;
+      color: #999;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 0.9rem;
+      color: #444;
+    }
+
+    @media (max-width: 600px) {
+      textarea {
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>30-Minute Notes</h1>
+  <div class="timer" id="timer">30:00</div>
+
+  <button class="start-btn" onclick="startTimer()">Start Timer</button>
+
+  <textarea id="noteArea" placeholder="Timer will unlock this area..." disabled></textarea>
+
+  <div class="footer">
+    ⏱ You have 30 minutes to write. Timer starts on button press.
+  </div>
+
+  <script>
+    let totalTime = 1800; // 30 minutes = 1800 seconds
+    let countdown;
+    const timerDisplay = document.getElementById("timer");
+    const noteArea = document.getElementById("noteArea");
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function startTimer() {
+      clearInterval(countdown);
+      let timeLeft = totalTime;
+      timerDisplay.textContent = formatTime(timeLeft);
+      noteArea.disabled = false;
+      noteArea.value = "";
+      noteArea.focus();
+
+      countdown = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = formatTime(timeLeft);
+
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          timerDisplay.textContent = "Time's up!";
+          noteArea.disabled = true;
+        }
+      }, 1000);
+    }
+  </script>
+
+</body>
+</html>
